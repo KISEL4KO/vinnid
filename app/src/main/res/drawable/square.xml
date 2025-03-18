@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/rectangle.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Размеры прямоугольника -->
+    <size
+        android:width="800dp"
+        android:height="600dp" />
+
+    <!-- Цвет заливки и прозрачность -->
+    <solid
+        android:color="#0ee15b"
+        android:alpha="0.88" /> <!-- 0.88 соответствует 88% прозрачности -->
+
+    <!-- Углы прямоугольника (если нужны) -->
+    <corners android:radius="30dp" />
+
+</shape>

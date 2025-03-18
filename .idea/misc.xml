@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/ellipse.xml" value="0.1" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/ellipse2.xml" value="0.1265" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/item_news.xml" value="0.145" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/rectangle.xml" value="0.1885" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/rectanglebar.xml" value="0.1" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/rectanglegreen.xml" value="0.253" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/rectanglegreen2.xml" value="0.222" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/rounded_corner_background.xml" value="0.363" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/rounded_corners.xml" value="0.253" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/square.xml" value="0.253" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/drawable/square2.xml" value="0.253" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/layout-v31/activity_main.xml" value="0.3723958333333333" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/layout/activity_home.xml" value="0.5" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/layout/activity_profile.xml" value="0.41452991452991456" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/layout/activity_results.xml" value="0.1" />
+        <entry key="..\:/Users/HOme/AndroidStudioProjects/Project/app/src/main/res/layout/item_news.xml" value="0.3333333333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

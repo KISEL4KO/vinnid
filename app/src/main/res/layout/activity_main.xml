@@ -1,0 +1,143 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/back"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4FBF6"
+    tools:context=".MainActivity">
+
+    <!-- PreviewView для отображения предварительного просмотра камеры -->
+
+    <!-- Текст с инструкцией -->
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="352dp"
+        android:layout_height="350dp"
+        android:background="@drawable/rounded_corners"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.091" />
+
+    <TextView
+        android:id="@+id/instruction_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="Поместите свое лицо в рамку"
+        android:textColor="#0ee15b"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/previewView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Нижняя панель с кнопками -->
+
+    <!-- Кнопка для съемки фото -->
+
+    <ImageView
+        android:id="@+id/bottom_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/previewView"
+        app:layout_constraintVertical_bias="0.863"
+        app:srcCompat="@drawable/rectanglebar" />
+
+    <!-- Иконка объектива -->
+
+    <ImageView
+        android:id="@+id/capture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="takePhoto"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_panel"
+        app:layout_constraintEnd_toEndOf="@+id/bottom_panel"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="@+id/bottom_panel"
+        app:layout_constraintTop_toTopOf="@+id/bottom_panel"
+        app:srcCompat="@drawable/ellipse" />
+
+    <ImageView
+        android:id="@+id/lens_icon"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/capture_button"
+        app:layout_constraintEnd_toEndOf="@+id/capture_button"
+        app:layout_constraintStart_toStartOf="@+id/capture_button"
+        app:layout_constraintTop_toTopOf="@+id/capture_button"
+        app:srcCompat="@drawable/lens" />
+
+    <!-- Кнопка перехода в профиль -->
+
+    <!-- Кнопка информации -->
+
+    <ImageView
+        android:id="@+id/profile_button"
+        android:layout_width="35dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="13dp"
+        android:onClick="goProfile"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_panel"
+        app:layout_constraintEnd_toEndOf="@+id/bottom_panel"
+        app:layout_constraintHorizontal_bias="0.424"
+        app:layout_constraintStart_toEndOf="@+id/capture_button"
+        app:layout_constraintTop_toTopOf="@+id/bottom_panel"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/user" />
+
+    <!-- Кнопка переключения камеры -->
+    <ImageView
+        android:id="@+id/info_button"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="14dp"
+        android:onClick="checkInfo"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_panel"
+        app:layout_constraintEnd_toStartOf="@+id/capture_button"
+        app:layout_constraintHorizontal_bias="0.581"
+        app:layout_constraintStart_toStartOf="@+id/bottom_panel"
+        app:layout_constraintTop_toTopOf="@+id/bottom_panel"
+        app:srcCompat="@drawable/info_icon" />
+
+    <ImageView
+        android:id="@+id/switch_camera_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="switchCamera"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.051"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.575"
+        app:srcCompat="@drawable/camer21" />
+
+    <!-- Кнопка загрузки из галереи -->
+    <ImageView
+        android:id="@+id/gallery_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="loadFromGallery"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.956"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.575"
+        app:srcCompat="@drawable/gfg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

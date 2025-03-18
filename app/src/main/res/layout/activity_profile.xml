@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Кнопка "Назад домой" -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/home"
+            android:onClick="onHome"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Заголовок "Ваш профиль" -->
+        <TextView
+            android:id="@+id/profileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ваш профиль"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Блок с информацией о стадии -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/rounded_corner_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Текст стадии -->
+            <TextView
+                android:id="@+id/textAcne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 стадия"
+                android:textColor="#FEFEFE"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- Кнопки для переключения между рекомендациями и историей -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btnRecommendations"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Рекомендации"
+                android:textSize="14sp"
+                android:backgroundTint="#0EE15B"
+                android:onClick="showRecommendations"/>
+
+            <Button
+                android:id="@+id/btnHistory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="История"
+                android:textSize="14sp"
+                android:backgroundTint="#D1CBC1"
+                android:onClick="showHistory"/>
+        </LinearLayout>
+
+        <!-- ViewFlipper для переключения между рекомендациями и историей -->
+        <ViewFlipper
+            android:id="@+id/viewFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <!-- Контейнер для рекомендаций -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_corner_background"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/text_recommendations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="8dp"
+                    android:text="Ваши рекомендации будут здесь..."
+                    android:textColor="#FEFEFE"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Контейнер для истории -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/rounded_corner_background"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/text_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Последние сведения из базы данных будут здесь..."
+                    android:textColor="#FEFEFE"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="8dp"
+                    android:textIsSelectable="true"/>
+            </LinearLayout>
+        </ViewFlipper>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/ellipse.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- Размеры эллипса -->
+    <size
+        android:width="75dp"
+        android:height="75dp" />
+
+    <!-- Цвет заливки и прозрачность -->
+    <solid
+        android:color="#32BB0C"
+        android:alpha="0.88" /> <!-- 0.88 соответствует 88% прозрачности -->
+
+</shape>
