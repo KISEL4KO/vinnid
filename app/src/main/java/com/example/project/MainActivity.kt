@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -111,7 +112,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Запуск камеры
-    // Запуск камеры
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -145,8 +145,10 @@ class MainActivity : AppCompatActivity() {
                         // Создаем MeteringPoint из координат касания
                         val point = factory.createPoint(motionEvent.x, motionEvent.y)
 
-                        // Создаем FocusMeteringAction
-                        val action = FocusMeteringAction.Builder(point).build()
+                        // Создаем FocusMeteringAction с автоматическим фокусом
+                        val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF)
+                            .setAutoCancelDuration(2, TimeUnit.SECONDS) // Автоматическое отключение фокуса через 2 секунды
+                            .build()
 
                         // Запускаем фокусировку
                         camera.cameraControl.startFocusAndMetering(action)
@@ -156,6 +158,15 @@ class MainActivity : AppCompatActivity() {
                     else -> return@setOnTouchListener false
                 }
             }
+
+            // Автоматическая фокусировка при старте камеры
+            val autoFocusPoint = previewView.meteringPointFactory.createPoint(0.5f, 0.5f) // Центр экрана
+            val autoFocusAction = FocusMeteringAction.Builder(autoFocusPoint, FocusMeteringAction.FLAG_AF)
+                .setAutoCancelDuration(2, TimeUnit.SECONDS) // Автоматическое отключение фокуса через 2 секунды
+                .build()
+
+            camera.cameraControl.startFocusAndMetering(autoFocusAction)
+
         }, ContextCompat.getMainExecutor(this))
     }
 
