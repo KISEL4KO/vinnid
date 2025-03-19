@@ -14,21 +14,25 @@
 
     <androidx.camera.view.PreviewView
         android:id="@+id/previewView"
-        android:layout_width="352dp"
+        android:layout_width="356dp"
         android:layout_height="350dp"
         android:background="@drawable/rounded_corners"
+        android:radius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.091" />
+        app:layout_constraintVertical_bias="0.107" />
+
+    <!-- Нижняя панель с кнопками -->
+
+    <!-- Кнопка для съемки фото -->
 
     <TextView
         android:id="@+id/instruction_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:gravity="center"
         android:text="Поместите свое лицо в рамку"
         android:textColor="#0ee15b"
@@ -36,12 +40,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/previewView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Нижняя панель с кнопками -->
-
-    <!-- Кнопка для съемки фото -->
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.428" />
 
     <ImageView
         android:id="@+id/bottom_panel"

@@ -6,6 +6,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -52,13 +55,13 @@ public class BackendHelper {
     private int currentCameraSelector = CameraSelector.LENS_FACING_BACK;
     private DatabaseHelper dbHelper;
     private CameraControl cameraControl;
-    private CameraInfo cameraInfo;
+    public  CameraInfo cameraInfo;
     private PreviewView previewView;
     private SensorManager sensorManager;
     private Sensor lightSensor;
 
     // Константы
-    private static final float CONFIDENCE_THRESHOLD = 0.3f; // Порог уверенности
+    private static final float CONFIDENCE_THRESHOLD = 0.37f; // Порог уверенности
     private static final String STAGE_CLEAR = "clear";
     private static final String STAGE_1 = "1-th stage";
     private static final String STAGE_2 = "2-th stage";
@@ -141,30 +144,6 @@ public class BackendHelper {
         cameraControl.startFocusAndMetering(action);
     }
 
-    // Проверка освещенности
-    public void checkLightingCondition() {
-        if (lightSensor == null) {
-            Toast.makeText(context, "Датчик освещенности не доступен", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Регистрация слушателя датчика освещенности
-        sensorManager.registerListener(new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                float lux = event.values[0];
-                if (lux < 30) { // Порог для плохого освещения (можно настроить)
-                    Toast.makeText(context, "Освещенность плохая", Toast.LENGTH_SHORT).show();
-                }
-                sensorManager.unregisterListener(this); // Отписываемся после получения данных
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                // Можно обработать изменение точности датчика, если нужно
-            }
-        }, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
-    }
 
     // Переключение камеры
     public void switchCamera(PreviewView previewView) {
@@ -223,83 +202,105 @@ public class BackendHelper {
             float[][][] outputBuffer = runInference(tensorImage);
             String results = processResults(outputBuffer, dbHelper);
 
-            Toast.makeText(context, results, Toast.LENGTH_LONG).show();
+            // Вызов Toast на UI-потоке
+            new Handler(Looper.getMainLooper()).post(() ->
+                    Toast.makeText(context, results, Toast.LENGTH_LONG).show()
+            );
+
         } catch (Exception e) {
-            Log.e("MainActivity", "Error processing image", e);
-            Toast.makeText(context, "Error processing image", Toast.LENGTH_SHORT).show();
+            Log.e("BackendHelper", "Error processing image", e);
+
+            // Вызов Toast на UI-потоке в случае ошибки
+            new Handler(Looper.getMainLooper()).post(() ->
+                    Toast.makeText(context, "Error processing image", Toast.LENGTH_SHORT).show()
+            );
         }
     }
 
+    // Выполнение модели TensorFlow Lite
     private float[][][] runInference(TensorImage tensorImage) {
         if (tflite == null) {
             Log.e("MainActivity", "TensorFlow Lite interpreter is not initialized");
-            Toast.makeText(context, "Model not loaded", Toast.LENGTH_SHORT).show();
             return new float[0][0][0];
         }
 
-        Tensor outputTensor = tflite.getOutputTensor(0);
-        int[] outputShape = outputTensor.shape();
-        float[][][] outputBuffer = new float[outputShape[0]][outputShape[1]][outputShape[2]];
-
-        tflite.run(tensorImage.getBuffer(), outputBuffer);
+        float[][][] outputBuffer = new float[1][10][8400]; // Буфер для выходных данных модели
+        tflite.run(tensorImage.getBuffer(), outputBuffer); // Запуск модели
         return outputBuffer;
     }
 
 
+    // Обработка результатов модели
     private String processResults(float[][][] outputBuffer, DatabaseHelper dbHelper) {
         StringBuilder results = new StringBuilder();
-        String[] labelNames = {"blackheads", "dark spot", "nodules", "papules", "pustules", "whiteheads"};
-        Set<String> detectedClasses = new HashSet<>();
+        String[] labelNames = {"blackheads", "dark spot", "nodules", "papules", "pustules", "whiteheads"}; // Названия классов
+        Set<String> detectedClasses = new HashSet<>(); // Множество обнаруженных классов
 
+        // Проверка, что выходные данные модели не пустые
         if (outputBuffer == null || outputBuffer.length == 0 || outputBuffer[0].length == 0) {
             return "No results to process.";
         }
 
+        // Счетчик для каждого класса
         int[] classCounts = new int[labelNames.length];
 
+        // Обработка выходных данных модели
         for (int i = 0; i < outputBuffer[0][0].length; i++) {
-            float confidence = 0f;
-            for (int j = 4; j < 10; j++) confidence = Math.max(confidence, outputBuffer[0][j][i]);
-            if (confidence > CONFIDENCE_THRESHOLD) {
+            float confidence =0f; // Уверенность модели
+            for (int j = 4; j < 10; j++) confidence = confidence > outputBuffer[0][j][i] ? confidence : outputBuffer[0][j][i];
+            if (confidence > CONFIDENCE_THRESHOLD) { // Фильтрация по порогу уверенности
                 int classId = -1;
                 float maxClassProb = 0f;
 
+                // Поиск класса с максимальной вероятностью
                 for (int j = 5; j < outputBuffer[0].length; j++) {
                     if (outputBuffer[0][j][i] > maxClassProb) {
                         maxClassProb = outputBuffer[0][j][i];
-                        classId = j - 5;
+                        classId = j - 5; // Индекс класса
                     }
                 }
 
                 if (classId >= 0 && classId < labelNames.length) {
-                    classCounts[classId]++;
-                    detectedClasses.add(labelNames[classId]);
+                    classCounts[classId]++; // Увеличиваем счетчик для класса
+                    detectedClasses.add(labelNames[classId]); // Добавляем класс в множество
                 }
             }
         }
 
+        // Формирование строки с результатами
         for (int i = 0; i < classCounts.length; i++) {
             if (classCounts[i] > 0) {
                 results.append(classCounts[i]).append(" ").append(labelNames[i]).append(", ");
             }
         }
 
+        // Удаление последней запятой и пробела
         if (results.length() > 0) {
             results.setLength(results.length() - 2);
         }
 
+        // Определение стадии акне
         String acneStage = determineAcneStage(
-                classCounts[0], classCounts[1], classCounts[2],
-                classCounts[3], classCounts[4], classCounts[5]
+                classCounts[0], // blackheads
+                classCounts[1], // dark spot
+                classCounts[2], // nodules
+                classCounts[3], // papules
+                classCounts[4], // pustules
+                classCounts[5]  // whiteheads
         );
 
+        // Сохранение стадии акне в базу данных
         dbHelper.insertAcneStage(acneStage);
+
+        // Добавление стадии акне в результаты
         results.append("\nСтадия акне: ").append(acneStage);
 
+        // Если ни один класс не обнаружен, добавляем информацию о чистой коже
         if (detectedClasses.isEmpty()) {
             results.append("\nКожа чистая, акне не обнаружено.");
         }
 
+        // Сохранение количества каждого класса в базу данных
         for (int i = 0; i < classCounts.length; i++) {
             if (classCounts[i] > 0) {
                 dbHelper.insertDetectedObject(labelNames[i], classCounts[i]);
